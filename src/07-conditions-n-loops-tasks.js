@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* *************************************************************************************************
  *                                                                                                *
  * Please read the following tutorial before implementing tasks:                                   *
@@ -27,8 +28,11 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  if (num % 3 === 0 && num % 5 === 0) return 'FizzBuzz';
+  if (num % 3 === 0) return 'Fizz';
+  if (num % 5 === 0) return 'Buzz';
+  return num;
 }
 
 
@@ -150,10 +154,12 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const buff = (circle.center.x - point.x) * (circle.center.x - point.x)
+  + (circle.center.y - point.y) * (circle.center.y - point.y);
+  if (buff < circle.radius ** 2) return true;
+  return false;
 }
-
 
 /**
  * Returns the first non repeated char in the specified strings otherwise returns null.
@@ -166,8 +172,15 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const result = str.split('').filter((item, i, arr) => {
+    const array = arr.slice(0);
+    array.splice(i, 1);
+    if (array.indexOf(item) === -1) return true;
+    return false;
+  });
+  if (result.length > 0) return result[0];
+  return null;
 }
 
 
@@ -193,8 +206,12 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const start = Math.min(a, b);
+  const end = Math.max(a, b);
+  const startBrackets = isStartIncluded ? '[' : '(';
+  const endBrackets = isEndIncluded ? ']' : ')';
+  return `${startBrackets}${start}, ${end}${endBrackets}`;
 }
 
 
@@ -252,8 +269,19 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  function getItemsSum(arr) {
+    return arr.reduce((sum, current) => sum + +current, 0);
+  }
+  const arr = ccn.toString().split('').reverse();
+  let result = 0;
+  for (let i = 1; i < arr.length; i += 1) {
+    if (i % 2 === 0) result += +arr[i];
+    else if (+arr[i] * 2 > 9) result += getItemsSum((+arr[i] * 2).toString().split(''));
+    else result += +arr[i] * 2;
+  }
+  if (result % 10 === 0 && +arr[0] === 0) return true;
+  return (10 - (result % 10)) === +arr[0];
 }
 
 /**
@@ -300,10 +328,22 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const arr = str.split('');
+  const stack = [];
+  const startBrackets = new Set('{[(<');
+  for (let i = 0; i < arr.length; i += 1) {
+    if (startBrackets.has(arr[i])) {
+      stack.push(arr[i]);
+    } else {
+      const buff = stack.pop();
+      if (!buff || (buff === '(' && arr[i] !== ')') || (buff === '[' && arr[i] !== ']')
+      || (buff === '<' && arr[i] !== '>') || (buff === '{' && arr[i] !== '}')) return false;
+    }
+  }
+  if (stack.length > 0) return false;
+  return true;
 }
-
 
 /**
  * Returns the string with n-ary (binary, ternary, etc, where n <= 10)
@@ -365,8 +405,18 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const result = Array(m1.length).fill(0);
+  for (let i = 0; i < m1.length; i += 1) {
+    const arrBuff = Array(m1.length).fill(0);
+    for (let j = 0; j < m1.length; j += 1) {
+      let sum = 0;
+      for (let k = 0; k < m2.length; k += 1) { sum += +m1[i][k] * +m2[k][j]; }
+      arrBuff[j] = sum;
+      result[i] = arrBuff;
+    }
+  }
+  return result;
 }
 
 
