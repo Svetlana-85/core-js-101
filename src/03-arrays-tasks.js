@@ -36,8 +36,7 @@ function findElement(arr, value) {
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
 function generateOdds(len) {
-  const arr = new Array(len);
-  return arr.fill(1).map((item, i) => i * 2 + 1);
+  return Array(len).fill(1).map((item, i) => i * 2 + 1);
 }
 
 
@@ -149,8 +148,7 @@ function getStringsLength(arr) {
  *    [ 1, 'b', 'c'], 0, 'x'  => [ 'x', 1, 'b', 'c' ]
  */
 function insertItem(arr, item, index) {
-  arr.splice(index, 0, item);
-  return arr;
+  return arr.splice(index, 0, item);
 }
 
 /**
@@ -238,10 +236,10 @@ function toArrayOfSquares(arr) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
  */
 function getMovingSum(arr) {
-  let count = 0;
+  let sum = 0;
   return arr.map((item) => {
-    count += item;
-    return count;
+    sum += item;
+    return sum;
   });
 }
 
@@ -278,7 +276,7 @@ function getSecondItems(array) {
 function propagateItemsByPositionIndex(arr) {
   let result = [];
   arr.map((item, i) => {
-    result = result.concat(new Array(i + 1).fill(item));
+    result = result.concat(Array(i + 1).fill(item));
     return result;
   });
   return result;
@@ -566,8 +564,8 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  return arr.map((item) => childrenSelector(item)).flat();
 }
 
 
@@ -606,8 +604,15 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  let pos = Math.floor(arr.length / 2);
+  const head = arr.slice(0, pos);
+  if (arr.length % 2 !== 0) {
+    head.unshift(arr[pos]);
+    pos += 1;
+  }
+  const tail = arr.slice(pos);
+  return tail.concat(head);
 }
 
 
